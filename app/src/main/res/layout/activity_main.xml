@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Scanner Status"
+        android:id="@+id/scannerStatus"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:hint="Name"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email"
+        android:visibility="gone"
+        android:hint="Email"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_name"
+        android:visibility="gone"
+        android:hint="Username"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:visibility="gone"
+        android:hint="Password"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accountbalance"
+        android:visibility="gone"
+        android:hint="Accountbalance"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sex"
+        android:visibility="gone"
+        android:hint="Sex"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dept"
+        android:visibility="gone"
+        android:hint="Dept"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/level"
+        android:visibility="gone"
+        android:hint="Level"/>
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dob"
+        android:visibility="gone"
+        android:hint="DOB"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/thumb_left"
+            android:id="@+id/leftThumb_fp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/index_left"
+            android:id="@+id/leftIndex_fp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/thumb_right"
+            android:id="@+id/rightThumb_fp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/index_right"
+            android:id="@+id/rightIndex_fp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Matching"
+            android:id="@+id/fingerMatch"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:gravity="bottom"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="Left Thumb Capture"
+            android:onClick="LeftThumbCapture"
+            android:textSize="10dp"
+            android:textAlignment="center"
+            android:id="@+id/left_Thumb_Capture"/>
+
+        <Button
+            android:gravity="bottom"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="Left Index Capture"
+            android:onClick="LeftIndexCapture"
+            android:textSize="10dp"
+            android:textAlignment="center"
+            android:id="@+id/left_Index_Capture"/>
+
+        <Button
+            android:gravity="bottom"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="Right Thumb Capture"
+            android:onClick="RightThumbCapture"
+            android:textSize="10dp"
+            android:textAlignment="center"
+            android:id="@+id/right_Thumb_Capture"/>
+
+        <Button
+            android:gravity="bottom"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="Right Index Capture"
+            android:onClick="RightIndexCapture"
+            android:textSize="10dp"
+            android:textAlignment="center"
+            android:id="@+id/right_Index_Capture"/>
+
+
+        <Button
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SavetoDB"
+            android:textSize="10dp"
+            android:onClick="saveToDB"
+            android:textAlignment="center"
+            android:id="@+id/saveDB"/>
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="String"
+            android:focusable="true"
+            android:longClickable="true"
+            android:textIsSelectable="true"
+
+            android:id="@+id/strin"/>
+    </ScrollView>
+
+
+
+
+</LinearLayout>
