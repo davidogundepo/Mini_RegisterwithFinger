@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.testing.aramis.sourceafis.FingerprintMatcher;
+import com.testing.aramis.sourceafis.FingerprintTemplate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView Strin;
 
+    String first = "fff";
+    String second = "fff";
+
     String LeftThumbFirst, LeftThumbConfirmed;
    // public static String LeftThumbConfirmed = null;
     String LeftIndexFirst, LeftIndexConfirmed;
@@ -64,13 +69,19 @@ public class MainActivity extends AppCompatActivity {
     Fingerprint fingerprint;
 
     byte[] imgg;
-    Bitmap bitmap;
+    Bitmap bitmap, bitmapAnother;
     private static final int SCAN_FINGER = 0;
-    private byte[] bytesObject;
+    private byte[] bytesObject, byteAnotherObject;
 
     StringBuilder sb;
 
     //public static Handler printHandler, updateHandler;
+
+
+    private FingerprintTemplate probeTemplate, candidateTemplate;
+    private FingerprintMatcher pleaseMatch = new FingerprintMatcher();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             byte [] image;
+
             String errorMessage = "empty";
             int status = msg.getData().getInt("status");
             Intent intent = new Intent();
@@ -154,31 +166,37 @@ public class MainActivity extends AppCompatActivity {
          //   try {
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 bytesObject = baos.toByteArray();
+//                bytesObject = baos.toByteArray();
+//                bytesObject = image;
+//                bytesObject = first.getBytes();
+                LeftThumbFirst = Base64.encodeToString(bytesObject, Base64.DEFAULT);
 
-            //    LeftThumbFirst = Base64.encodeToString(b, Base64.DEFAULT);
+                probeTemplate = new FingerprintTemplate()
+                        .dpi(500).create(bytesObject);
 
 
-                BigInteger biggi = new BigInteger(bytesObject);
 
-                LeftThumbFirst = biggi.toString();
+//                BigInteger biggi = new BigInteger(bytesObject);
+
+
+//                Makes it slower with 4 secs we could use a spinnerview here
+//                LeftThumbFirst = biggi.toString();
 
 //                Strin.setText(Arrays.toString(bytesObject));
-
-                Strin.setText("okay");
-
-
-
-                sb = new StringBuilder(bytesObject.length * Byte.SIZE);
-                for( int i = 0; i < Byte.SIZE * bytesObject.length; i++ ) {
-                    sb.append((bytesObject[i / Byte.SIZE] << i % Byte.SIZE & 0x80) == 0 ? '0' : '1');
-                    sb.toString();
-                }
-
-
+//
+//                Strin.setText("okay");
+//
+//
+//
+//                sb = new StringBuilder(bytesObject.length * Byte.SIZE);
+//                for( int i = 0; i < Byte.SIZE * bytesObject.length; i++ ) {
+//                    sb.append((bytesObject[i / Byte.SIZE] << i % Byte.SIZE & 0x80) == 0 ? '0' : '1');
+//                    sb.toString();
+//                }
+//
+//
 
 
 
@@ -234,10 +252,135 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case Status.SUCCESS:
                     ScannerStatus.setText("Fingerprint Successfully Captured");
-//                    Intent intent = new Intent();
-//                    imgg = intent.getByteArrayExtra("img");
-//                    bitmap = BitmapFactory.decodeByteArray(imgg, 0, imgg.length);
-//                    LeftThumbImage.setImageBitmap(bitmap);
+                    break;
+                case Status.ERROR:
+                    ScannerStatus.setText("Erroring");
+                    break;
+                default:
+                    ScannerStatus.setText(String.valueOf(status));
+                    break;
+            }
+
+        }
+    };
+
+    Handler printAnotherHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            byte [] image;
+            String errorMessage = "empty";
+            int status = msg.getData().getInt("status");
+            Intent intent = new Intent();
+            intent.putExtra("status", status);
+
+
+
+            if (status == Status.SUCCESS) {
+
+
+
+                image = msg.getData().getByteArray("img");
+                bitmapAnother = BitmapFactory.decodeByteArray(image, 0, image.length);
+                LeftIndexImage.setImageBitmap(bitmapAnother);
+                intent.putExtra("img", image);
+                ConfirmFingerMatch.setText("Fingerprint captured");
+
+//                LeftThumbFirst = ConfirmFingerMatch.getText().toString();
+
+//
+//                byte[] decodedByte = Base64.decode(LeftThumbFirst, 0);
+//                bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+
+
+                //   try {
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmapAnother.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byteAnotherObject = baos.toByteArray();
+//                byteAnotherObject = baos.toByteArray();
+//                byteAnotherObject = image;
+//                byteAnotherObject = second.getBytes();
+                LeftIndexFirst = Base64.encodeToString(byteAnotherObject, Base64.DEFAULT);
+
+                candidateTemplate = new FingerprintTemplate()
+                        .dpi(500).create(byteAnotherObject);
+
+
+
+//                BigInteger biggi = new BigInteger(byteAnotherObject);
+
+
+//                Makes it slower with 4 secs we could use a spinnerview here
+//                LeftThumbFirst = biggi.toString();
+
+//                Strin.setText(Arrays.toString(bytesObject));
+
+//                Strin.setText("okay");
+//
+//
+//
+//                sb = new StringBuilder(byteAnotherObject.length * Byte.SIZE);
+//                for( int i = 0; i < Byte.SIZE * byteAnotherObject.length; i++ ) {
+//                    sb.append((byteAnotherObject[i / Byte.SIZE] << i % Byte.SIZE & 0x80) == 0 ? '0' : '1');
+//                    sb.toString();
+//                }
+//
+
+
+
+
+//                    return LeftThumbFirst;
+//                } catch (NullPointerException e) {
+//                    return null;
+//                } catch (OutOfMemoryError e) {
+//                    return null;
+//                }
+
+                //  To Decode
+//                byte [] cake = Base64.decode(LeftThumbConfirmed, Base64.DEFAULT);
+//                Bitmap wide = BitmapFactory.decodeByteArray(cake, 0, cake.length);
+//                RightThumbImage.setImageBitmap(wide);
+
+
+
+            } else {
+                errorMessage = msg.getData().getString("errorMessage");
+                intent.putExtra("errorMessage", errorMessage);
+            }
+            // setResult(RESULT_OK, intent);
+            //  finish();
+        }
+    };
+
+    Handler updateAnotherHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            int status = msg.getData().getInt("status");
+
+            switch (status) {
+                case Status.INITIALISED:
+                    ScannerStatus.setText("Setting up reader");
+                    break;
+                case Status.SCANNER_POWERED_ON:
+                    ScannerStatus.setText("Reader powered on");
+                    break;
+                case Status.READY_TO_SCAN:
+                    ScannerStatus.setText("Ready to scan finger");
+                    break;
+                case Status.FINGER_DETECTED:
+                    ScannerStatus.setText("Finger Detected");
+                    break;
+                case Status.RECEIVING_IMAGE:
+                    ScannerStatus.setText("Receiving Image");
+                    break;
+                case Status.FINGER_LIFTED:
+                    ScannerStatus.setText("Finger has been lifted off reader");
+                    break;
+                case Status.SCANNER_POWERED_OFF:
+                    ScannerStatus.setText("Reader is off");
+                    break;
+                case Status.SUCCESS:
+                    ScannerStatus.setText("Fingerprint Successfully Captured");
                     break;
                 case Status.ERROR:
                     ScannerStatus.setText("Erroring");
@@ -256,57 +399,34 @@ public class MainActivity extends AppCompatActivity {
 
         fingerprint.scan(this, printHandler, updateHandler);
 
-//        byte []  vv;
-//        bitmap = BitmapFactory.decodeByteArray(vv, 0, vv.length);
+    }
 
-     //   ConfirmFingerMatch.setText("Fingerprint captured");
+    public void LeftIndexCapture (View view) {
 
-//        LeftThumbFirst = ConfirmFingerMatch.getText().toString();
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        byte[] b = baos.toByteArray();
-//        LeftThumbFirst = Base64.encodeToString(b, Base64.DEFAULT);
-
-//        int status;
-//        int requestCode = 0;
-//        int resultCode = 0;
-//        Intent intent = null;
-//        String errorMessage;
-//        switch (requestCode) {
-//            case (SCAN_FINGER) : {
-//                if (resultCode == RESULT_OK) {
-//                    status = intent.getIntExtra("status", Status.ERROR);
-//                    if (status == Status.SUCCESS) {
-//                        ConfirmFingerMatch.setText("Fingerprint captured");
-//                        imgg = intent.getByteArrayExtra("img");
-//                        bitmap = BitmapFactory.decodeByteArray(imgg, 0, imgg.length);
-//                        LeftThumbImage.setImageBitmap(bitmap);
-//
-//                    } else {
-//                        errorMessage = intent.getStringExtra("errorMessage");
-//                        ScannerStatus.setText(errorMessage);
-//                    }
-//                }
-//            }
-//            break;
-//        }
+        fingerprint.scan(this, printAnotherHandler, updateAnotherHandler);
 
     }
 
-//    public void  LeftIndexCapture (View view) {
-//
-//    }
-//
-//    public void  RightThumbCapture (View view) {
-//
-//    }
-//
-//    public void  RightIndexCapture (View view) {
-//
-//    }
+    public void RightThumbCapture (View view) {
+
+    }
+
+    public void RightIndexCapture (View view) {
+
+        double score = pleaseMatch.index(this.probeTemplate).match(this.candidateTemplate);
+
+        boolean matches = score >= 40;
+
+        if (matches) {
+            Toast.makeText(MainActivity.this, "Successfully Matched Dave, Congrats", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Few more Changes Dave", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
 
     public void  saveToDB (View view) {
 
@@ -347,16 +467,18 @@ public class MainActivity extends AppCompatActivity {
 
                 Map<String, String> params = new HashMap<>();
 
-                params.put("name", Name.getText().toString());
+//                params.put("name", Name.getText().toString());
                 params.put("email", Email.getText().toString());
-                params.put("user_name", Username.getText().toString());
-                params.put("password", Password.getText().toString());
-                params.put("left_thumb_fingerprint", sb.toString());
-                params.put("accountbalance", Accountbalance.getText().toString());
-                params.put("sex", Sex.getText().toString());
-                params.put("department", Dept.getText().toString());
-                params.put("level", Level.getText().toString());
-                params.put("d_o_b", DOB.getText().toString());
+//                params.put("user_name", Username.getText().toString());
+//                params.put("password", Password.getText().toString());
+                params.put("left_thumb_fingerprint", LeftThumbFirst);
+//                params.put("left_thumb_fingerprint", sb.toString());
+//                params.put("left_thumb_fingerprint", "Okay");
+//                params.put("accountbalance", Accountbalance.getText().toString());
+//                params.put("sex", Sex.getText().toString());
+//                params.put("department", Dept.getText().toString());
+//                params.put("level", Level.getText().toString());
+//                params.put("d_o_b", DOB.getText().toString());
 
 
                 return params;
